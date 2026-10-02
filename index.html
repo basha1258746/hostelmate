@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HostelMate — Smart Hostel Finder Near College</title>
+  <meta name="description" content="HostelMate finds hostels within 5 km of your college — available rooms, AC/Non-AC, food ratings, price details. New College. New City. No Worries." />
+
+  <!-- Cormorant Garamond + Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='black'/%3E%3Cpath d='M9 23V9h3v5.5h8V9h3v14h-3v-5.5h-8V23z' fill='%23D4AF7A'/%3E%3C/svg%3E" />
+
+  <style>
+/* ============================================================
+   HostelMate — Luxury Dark · Cinematic Editorial
+   Black #000000 · Ivory #F4EFE6 · Gold #D4AF7A
+   Serif: Cormorant Garamond · Sans: Inter
+   ============================================================ */
+
+:root {
+  --black: #000000;
+  --ivory: #F4EFE6;
+  --gold: #D4AF7A;
+  --line: rgba(255, 255, 255, 0.08);
+  --line-ivory: rgba(244, 239, 230, 0.15);
+  --ivory-70: rgba(244, 239, 230, 0.7);
+  --ivory-50: rgba(244, 239, 230, 0.5);
+  --ivory-40: rgba(244, 239, 230, 0.4);
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --pad-x: 8vw;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--ivory);
+  font-family: 'Inter', sans-serif;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--gold); color: var(--black); }
+
+.serif { font-family: 'Cormorant Garamond', Georgia, serif; }
+
+img, svg { display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+/* ---------- Shared primitives ---------- */
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ivory-50);
+}
+
+.eyebrow::before {
+  content: '▸';
+  color: var(--gold);
+  letter-spacing: 0;
+  font-size: 10px;
+}
+
+.display {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+}
+
+.display em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold);
+}
+
+.narrative {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 21px;
+  line-height: 1.6;
+  color: var(--ivory-70);
+}
+
+.gold-line {
+  width: 50px;
+  height: 1px;
+  background: var(--gold);
+}
+
+/* Cinematic primary button */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid var(--ivory);
+  background: transparent;
+  color: var(--ivory);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 18px 36px;
+  transition: all 0.4s var(--ease);
+}
+
+.btn:hover { background: var(--ivory); color: var(--black); }
+
+.btn svg { width: 14px; height: 14px; transition: transform 0.4s var(--ease); }
+.btn:hover svg { transform: translate(3px, -3px); }
+
+.btn--gold { border-color: var(--gold); color: var(--gold); }
+.btn--gold:hover { background: var(--gold); color: var(--black); }
+
+/* Scroll reveals */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(36px);
+  transition: opacity 1s var(--ease), transform 1s var(--ease);
+}
+
+[data-reveal].is-visible { opacity: 1; transform: translateY(0); }
+
+/* ===================== HEADER ===================== */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px var(--pad-x);
+  border-bottom: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.logo {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 26px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+.logo em { font-style: italic; color: var(--gold); }
+
+.nav { display: flex; gap: 40px; }
+
+.nav a {
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ivory-50);
+  transition: color 0.4s var(--ease);
+}
+
+.nav a:hover { color: var(--gold); }
+
+@media (max-width: 760px) {
+  .nav { display: none; }
+}
+
+/* ===================== HERO ===================== */
+.hero {
+  position: relative;
+  min-height: 95vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 140px var(--pad-x) 100px;
+  overflow: hidden;
+}
+
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.hero__bg svg { width: min(1200px, 90vw); height: auto; }
+
+.hero__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+.hero__content .eyebrow { justify-content: center; margin-bottom: 40px; }
+
+.hero__title {
+  font-size: clamp(72px, 13vw, 180px);
+}
+
+.hero__lede {
+  max-width: 42rem;
+  margin-top: 40px;
+}
+
+.hero__scroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--ivory-50);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+.hero__scroll svg { width: 20px; height: 20px; }
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* ===================== ATMOSPHERE GRID ===================== */
+.essentials { padding: 140px var(--pad-x); }
+
+.section-head {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-bottom: 72px;
+}
+
+.section-title { font-size: clamp(44px, 6.5vw, 92px); }
+
+.atmo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.atmo-card {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid transparent;
+  transition: border-color 0.6s var(--ease);
+}
+
+.atmo-card:hover { border-color: var(--gold); }
+
+.atmo-card__img {
+  position: absolute;
+  inset: 0;
+  opacity: 0.6;
+}
+
+.atmo-card__img svg {
+  width: 100%;
+  height: 100%;
+  filter: grayscale(50%);
+  transform: scale(1);
+  transition: filter 1s var(--ease), transform 1s var(--ease);
+}
+
+.atmo-card:hover .atmo-card__img svg {
+  filter: grayscale(0%);
+  transform: scale(1.05);
+}
+
+.atmo-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.4) 100%);
+  pointer-events: none;
+}
+
+.atmo-card__body {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 32px;
+}
+
+.atmo-card__title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.atmo-card__sub {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ivory-50);
+}
+
+/* ===================== FEATURE BANDS ===================== */
+.band {
+  position: relative;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  padding: 120px var(--pad-x);
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+}
+
+.band__bg {
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.band__bg svg {
+  width: 100%;
+  height: 100%;
+  filter: grayscale(100%);
+  transition: filter 1s var(--ease);
+}
+
+.band:hover .band__bg svg { filter: grayscale(0%); }
+
+.band::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.96) 20%, rgba(0, 0, 0, 0.55) 55%, rgba(0, 0, 0, 0.1) 100%);
+  pointer-events: none;
+}
+
+.band__content {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+.band__title { font-size: clamp(52px, 7.5vw, 110px); }
+
+.checklist { list-style: none; display: flex; flex-direction: column; gap: 18px; }
+
+.checklist li {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 22px;
+  color: var(--ivory-70);
+}
+
+.checklist svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+/* ===================== HOW IT WORKS ===================== */
+.how { padding: 140px var(--pad-x); border-top: 1px solid var(--line); }
+
+.steps {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 40px 24px;
+}
+
+.step {
+  border-top: 1px solid var(--line-ivory);
+  padding-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.step__num {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+}
+
+.step h3 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.step p {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--ivory-50);
+}
+
+@media (max-width: 1000px) {
+  .steps { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ===================== BOOKING / CONTACT ===================== */
+.booking {
+  position: relative;
+  padding: 140px var(--pad-x);
+  border-top: 1px solid var(--line);
+  overflow: hidden;
+}
+
+.booking__bg {
+  position: absolute;
+  inset: -80px;
+  opacity: 0.3;
+  filter: grayscale(30%) blur(48px);
+  pointer-events: none;
+}
+
+.booking__bg svg { width: 100%; height: 100%; }
+
+.booking-card {
+  position: relative;
+  z-index: 1;
+  max-width: 780px;
+  margin: 0 auto;
+  background: var(--black);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 48px;
+}
+
+.booking-card .eyebrow { margin-bottom: -24px; }
+
+.booking__title { font-size: clamp(44px, 5.5vw, 72px); }
+
+.booking__form {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.field { display: flex; flex-direction: column; gap: 10px; }
+
+.field--full { grid-column: 1 / -1; }
+
+.field label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ivory-40);
+}
+
+.field input,
+.field select {
+  background: transparent;
+  border: 1px solid var(--line-ivory);
+  color: var(--ivory);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  padding: 20px;
+  outline: none;
+  transition: border-color 0.4s var(--ease);
+  border-radius: 0;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23D4AF7A' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 20px center;
+}
+
+.field select option { background: var(--black); color: var(--ivory); }
+
+.field input::placeholder { color: var(--ivory-40); }
+
+.field input:focus,
+.field select:focus { border-color: var(--ivory); }
+
+.booking__actions { grid-column: 1 / -1; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+
+.booking__note {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--ivory-40);
+}
+
+.booking__done {
+  display: none;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 22px;
+  color: var(--gold);
+}
+
+@media (max-width: 700px) {
+  .booking-card { padding: 48px 28px; }
+  .booking__form { grid-template-columns: 1fr; }
+}
+
+/* ===================== FOOTER ===================== */
+.footer { border-top: 1px solid var(--line); padding: 96px var(--pad-x) 40px; }
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 56px;
+}
+
+.footer__wordmark {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(40px, 5vw, 64px);
+  font-weight: 300;
+  line-height: 0.95;
+}
+
+.footer__wordmark em { font-style: italic; color: var(--gold); }
+
+.footer__tag {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 18px;
+  color: var(--ivory-50);
+  margin-top: 20px;
+  max-width: 320px;
+  line-height: 1.5;
+}
+
+.footer__col { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+
+.footer__label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ivory-40);
+  margin-bottom: 8px;
+}
+
+.footer__col a {
+  font-size: 14px;
+  color: var(--ivory-70);
+  transition: color 0.4s var(--ease);
+}
+
+.footer__col a:hover { color: var(--gold); }
+
+.footer__bottom {
+  margin-top: 88px;
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--ivory-40);
+}
+
+@media (max-width: 800px) {
+  .footer__grid { grid-template-columns: 1fr; gap: 40px; }
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 1000px) {
+  .atmo-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .atmo-grid { grid-template-columns: 1fr; }
+  .atmo-card { aspect-ratio: 4 / 5; max-width: 420px; width: 100%; margin: 0 auto; }
+  .band { min-height: 0; padding-top: 100px; padding-bottom: 100px; }
+  .band::after { background: rgba(0, 0, 0, 0.82); }
+  .essentials, .how, .booking { padding-top: 100px; padding-bottom: 100px; }
+  .hero__lede { font-size: 18px; }
+}
+  </style>
+</head>
+<body>
+
+  <!-- ===================== HEADER ===================== -->
+  <header class="header">
+    <a href="#top" class="logo">Hostel<em>Mate</em></a>
+    <nav class="nav">
+      <a href="#essentials">Essentials</a>
+      <a href="#discover">Discover</a>
+      <a href="#how">How It Works</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- ===================== CINEMATIC HERO ===================== -->
+    <section class="hero">
+      <div class="hero__bg" aria-hidden="true">
+        <svg viewBox="0 0 1200 600" fill="none">
+          <circle cx="950" cy="140" r="70" stroke="#F4EFE6" stroke-opacity="0.5"/>
+          <rect x="80" y="280" width="120" height="320" stroke="#F4EFE6" stroke-opacity="0.6"/>
+          <rect x="230" y="200" width="140" height="400" stroke="#F4EFE6" stroke-opacity="0.45"/>
+          <rect x="400" y="320" width="110" height="280" stroke="#F4EFE6" stroke-opacity="0.6"/>
+          <rect x="540" y="160" width="150" height="440" stroke="#D4AF7A" stroke-opacity="0.5"/>
+          <rect x="720" y="260" width="120" height="340" stroke="#F4EFE6" stroke-opacity="0.45"/>
+          <rect x="870" y="220" width="130" height="380" stroke="#F4EFE6" stroke-opacity="0.55"/>
+          <g fill="#F4EFE6" fill-opacity="0.25">
+            <rect x="100" y="310" width="14" height="20"/><rect x="130" y="310" width="14" height="20"/>
+            <rect x="100" y="350" width="14" height="20"/><rect x="130" y="350" width="14" height="20"/>
+            <rect x="250" y="230" width="14" height="20"/><rect x="280" y="230" width="14" height="20"/>
+            <rect x="250" y="270" width="14" height="20"/><rect x="280" y="270" width="14" height="20"/>
+            <rect x="250" y="310" width="14" height="20"/><rect x="280" y="310" width="14" height="20"/>
+            <rect x="420" y="350" width="14" height="20"/><rect x="450" y="350" width="14" height="20"/>
+            <rect x="560" y="190" width="14" height="20" fill="#D4AF7A"/><rect x="590" y="190" width="14" height="20" fill="#D4AF7A"/>
+            <rect x="620" y="190" width="14" height="20"/><rect x="560" y="230" width="14" height="20"/>
+            <rect x="620" y="230" width="14" height="20" fill="#D4AF7A"/><rect x="560" y="270" width="14" height="20"/>
+            <rect x="590" y="270" width="14" height="20"/><rect x="620" y="270" width="14" height="20" fill="#D4AF7A"/>
+            <rect x="740" y="290" width="14" height="20"/><rect x="770" y="290" width="14" height="20"/>
+            <rect x="890" y="250" width="14" height="20"/><rect x="920" y="250" width="14" height="20"/>
+            <rect x="890" y="290" width="14" height="20"/><rect x="920" y="290" width="14" height="20"/>
+          </g>
+          <path d="M0 600 L0 520 L1200 520 L1200 600" stroke="#F4EFE6" stroke-opacity="0.35"/>
+        </svg>
+      </div>
+
+      <div class="hero__content">
+        <p class="eyebrow" data-reveal>Smart Hostel Finder — Near College</p>
+        <h1 class="display hero__title" data-reveal style="transition-delay: 0.1s;">Hostel<em>Mate</em></h1>
+        <p class="narrative hero__lede" data-reveal style="transition-delay: 0.2s;">
+          New college. New city. No worries — every hostel within five kilometres
+          of your campus, with real rooms, honest food and clear prices.
+        </p>
+      </div>
+
+      <a class="hero__scroll" href="#essentials" aria-label="Scroll down">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M12 4v16m0 0l-6-6m6 6l6-6"/></svg>
+      </a>
+    </section>
+
+    <!-- ===================== ATMOSPHERE GRID ===================== -->
+    <section class="essentials" id="essentials">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">The Essentials</p>
+        <h2 class="display section-title">Everything before you <em>move in.</em></h2>
+      </div>
+
+      <div class="atmo-grid">
+        <article class="atmo-card" data-reveal>
+          <div class="atmo-card__img" aria-hidden="true">
+            <svg viewBox="0 0 400 500" fill="none">
+              <g stroke="#F4EFE6" stroke-opacity="0.35">
+                <path d="M60 90 H340 M60 180 H340 M60 270 H340 M60 360 H340"/>
+                <path d="M100 40 V460 M200 40 V460 M300 40 V460"/>
+              </g>
+              <path d="M100 400 C 160 340, 140 260, 200 220 C 260 260, 240 340, 300 400" stroke="#D4AF7A" stroke-opacity="0.9" stroke-width="2"/>
+              <circle cx="200" cy="220" r="26" stroke="#D4AF7A" stroke-width="2"/>
+              <circle cx="200" cy="220" r="8" fill="#D4AF7A"/>
+            </svg>
+          </div>
+          <div class="atmo-card__body">
+            <h3 class="atmo-card__title">Near-Campus Search</h3>
+            <span class="atmo-card__sub">5 km radius map</span>
+            <span class="gold-line"></span>
+          </div>
+        </article>
+
+        <article class="atmo-card" data-reveal style="transition-delay: 0.08s;">
+          <div class="atmo-card__img" aria-hidden="true">
+            <svg viewBox="0 0 400 500" fill="none">
+              <rect x="120" y="80" width="160" height="340" stroke="#F4EFE6" stroke-opacity="0.5"/>
+              <rect x="140" y="100" width="120" height="140" stroke="#F4EFE6" stroke-opacity="0.3"/>
+              <circle cx="200" cy="290" r="22" stroke="#D4AF7A" stroke-width="2"/>
+              <path d="M200 306 V330 M200 330 H214" stroke="#D4AF7A" stroke-width="2"/>
+              <rect x="80" y="420" width="240" height="2" fill="#F4EFE6" fill-opacity="0.35"/>
+            </svg>
+          </div>
+          <div class="atmo-card__body">
+            <h3 class="atmo-card__title">Live Rooms</h3>
+            <span class="atmo-card__sub">Real availability</span>
+            <span class="gold-line"></span>
+          </div>
+        </article>
+
+        <article class="atmo-card" data-reveal style="transition-delay: 0.16s;">
+          <div class="atmo-card__img" aria-hidden="true">
+            <svg viewBox="0 0 400 500" fill="none">
+              <circle cx="200" cy="250" r="70" stroke="#D4AF7A" stroke-width="2"/>
+              <g stroke="#F4EFE6" stroke-opacity="0.5">
+                <path d="M200 120 V180 M200 320 V380 M70 250 H130 M270 250 H330"/>
+                <path d="M116 166 L152 202 M248 298 L284 334 M116 334 L152 298 M248 202 L284 166"/>
+              </g>
+            </svg>
+          </div>
+          <div class="atmo-card__body">
+            <h3 class="atmo-card__title">AC · Non-AC</h3>
+            <span class="atmo-card__sub">Filter by comfort</span>
+            <span class="gold-line"></span>
+          </div>
+        </article>
+
+        <article class="atmo-card" data-reveal style="transition-delay: 0.24s;">
+          <div class="atmo-card__img" aria-hidden="true">
+            <svg viewBox="0 0 400 500" fill="none">
+              <path d="M100 260 H300 C 300 340, 260 380, 200 380 C 140 380, 100 340, 100 260 Z" stroke="#F4EFE6" stroke-opacity="0.55"/>
+              <path d="M120 300 H280" stroke="#F4EFE6" stroke-opacity="0.3"/>
+              <path d="M160 220 C 150 200, 170 190, 160 170 M200 220 C 190 200, 210 190, 200 170 M240 220 C 230 200, 250 190, 240 170" stroke="#D4AF7A" stroke-width="2"/>
+              <path d="M150 410 H250" stroke="#F4EFE6" stroke-opacity="0.35"/>
+            </svg>
+          </div>
+          <div class="atmo-card__body">
+            <h3 class="atmo-card__title">Mess Ratings</h3>
+            <span class="atmo-card__sub">Honest food reviews</span>
+            <span class="gold-line"></span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== FEATURE BAND 1 ===================== -->
+    <section class="band" id="discover">
+      <div class="band__bg" aria-hidden="true">
+        <svg viewBox="0 0 1200 700" fill="none" preserveAspectRatio="xMidYMid slice">
+          <g stroke="#F4EFE6" stroke-opacity="0.3">
+            <path d="M0 140 H1200 M0 320 H1200 M0 500 H1200"/>
+            <path d="M200 0 V700 M480 0 V700 M760 0 V700 M1040 0 V700"/>
+          </g>
+          <path d="M200 500 C 320 420, 300 320, 480 320 C 620 320, 640 200, 760 140" stroke="#D4AF7A" stroke-opacity="0.9" stroke-width="2.5"/>
+          <circle cx="200" cy="500" r="16" stroke="#D4AF7A" stroke-width="2"/>
+          <circle cx="480" cy="320" r="12" fill="#D4AF7A" fill-opacity="0.8"/>
+          <circle cx="760" cy="140" r="20" stroke="#D4AF7A" stroke-width="2"/>
+          <circle cx="1040" cy="500" r="12" fill="#F4EFE6" fill-opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="band__content">
+        <p class="eyebrow" data-reveal>Discovery</p>
+        <h2 class="display band__title" data-reveal style="transition-delay: 0.08s;">Every hostel. One <em>map.</em></h2>
+        <ul class="checklist" data-reveal style="transition-delay: 0.16s;">
+          <li><svg viewBox="0 0 16 16"><path d="M2 8.5L6 12.5L14 3.5" stroke="#D4AF7A" stroke-width="1.5" fill="none"/></svg>Select your college — everything anchors to campus</li>
+          <li><svg viewBox="0 0 16 16"><path d="M2 8.5L6 12.5L14 3.5" stroke="#D4AF7A" stroke-width="1.5" fill="none"/></svg>Every hostel within a 5 km radius, pinned</li>
+          <li><svg viewBox="0 0 16 16"><path d="M2 8.5L6 12.5L14 3.5" stroke="#D4AF7A" stroke-width="1.5" fill="none"/></svg>Walking distance and commute, at a glance</li>
+        </ul>
+        <a class="btn" href="#contact" data-reveal style="transition-delay: 0.24s;">Explore the app
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M8 7h9v9"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===================== FEATURE BAND 2 ===================== -->
+    <section class="band">
+      <div class="band__bg" aria-hidden="true">
+        <svg viewBox="0 0 1200 700" fill="none" preserveAspectRatio="xMidYMid slice">
+          <rect x="700" y="120" width="360" height="460" stroke="#F4EFE6" stroke-opacity="0.45"/>
+          <path d="M740 200 H1020 M740 250 H1020 M740 300 H960" stroke="#F4EFE6" stroke-opacity="0.3"/>
+          <rect x="740" y="360" width="140" height="90" stroke="#D4AF7A" stroke-opacity="0.8"/>
+          <rect x="910" y="360" width="110" height="90" stroke="#F4EFE6" stroke-opacity="0.35"/>
+          <circle cx="770" cy="510" r="8" fill="#D4AF7A" fill-opacity="0.8"/>
+          <path d="M790 510 H990" stroke="#F4EFE6" stroke-opacity="0.35"/>
+          <rect x="180" y="220" width="120" height="260" stroke="#F4EFE6" stroke-opacity="0.3"/>
+          <rect x="340" y="260" width="120" height="220" stroke="#F4EFE6" stroke-opacity="0.25"/>
+        </svg>
+      </div>
+      <div class="band__content">
+        <p class="eyebrow" data-reveal>Transparency</p>
+        <h2 class="display band__title" data-reveal style="transition-delay: 0.08s;">No surprises. Only <em>rooms.</em></h2>
+        <ul class="checklist" data-reveal style="transition-delay: 0.16s;">
+          <li><svg viewBox="0 0 16 16"><path d="M2 8.5L6 12.5L14 3.5" stroke="#D4AF7A" stroke-width="1.5" fill="none"/></svg>Live room availability before you travel</li>
+          <li><svg viewBox="0 0 16 16"><path d="M2 8.5L6 12.5L14 3.5" stroke="#D4AF7A" stroke-width="1.5" fill="none"/></svg>AC / Non-AC filters and honest mess ratings</li>
+          <li><svg viewBox="0 0 16 16"><path d="M2 8.5L6 12.5L14 3.5" stroke="#D4AF7A" stroke-width="1.5" fill="none"/></svg>Upfront price details — no agent cuts</li>
+        </ul>
+        <a class="btn" href="#how" data-reveal style="transition-delay: 0.24s;">See how it works
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M8 7h9v9"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===================== HOW IT WORKS ===================== -->
+    <section class="how" id="how">
+      <div class="section-head" data-reveal>
+        <p class="eyebrow">The Ritual</p>
+        <h2 class="display section-title">Confused to moved in, in <em>five</em> steps.</h2>
+      </div>
+      <ol class="steps">
+        <li class="step" data-reveal>
+          <span class="step__num">01</span>
+          <h3>Select College</h3>
+          <p>Pick your campus — the search begins and ends there.</p>
+        </li>
+        <li class="step" data-reveal style="transition-delay: 0.08s;">
+          <span class="step__num">02</span>
+          <h3>View the Map</h3>
+          <p>Every hostel within five kilometres, pinned and priced.</p>
+        </li>
+        <li class="step" data-reveal style="transition-delay: 0.16s;">
+          <span class="step__num">03</span>
+          <h3>Apply Filters</h3>
+          <p>Budget, AC or Non-AC, distance — until only the right rooms remain.</p>
+        </li>
+        <li class="step" data-reveal style="transition-delay: 0.24s;">
+          <span class="step__num">04</span>
+          <h3>Compare Details</h3>
+          <p>Availability, mess ratings and safety scores, side by side.</p>
+        </li>
+        <li class="step" data-reveal style="transition-delay: 0.32s;">
+          <span class="step__num">05</span>
+          <h3>Contact the Owner</h3>
+          <p>Call or message directly — no middlemen, no agent cuts.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ===================== FLOATING BOOKING CARD ===================== -->
+    <section class="booking" id="contact">
+      <div class="booking__bg" aria-hidden="true">
+        <svg viewBox="0 0 1200 800" fill="none" preserveAspectRatio="xMidYMid slice">
+          <circle cx="300" cy="200" r="220" stroke="#F4EFE6" stroke-opacity="0.4"/>
+          <circle cx="900" cy="600" r="260" stroke="#D4AF7A" stroke-opacity="0.5"/>
+          <rect x="500" y="100" width="300" height="300" stroke="#F4EFE6" stroke-opacity="0.3"/>
+        </svg>
+      </div>
+
+      <div class="booking-card" data-reveal>
+        <p class="eyebrow">Reserve Your Search</p>
+        <h2 class="display booking__title">Find <em>your</em> hostel.</h2>
+        <form class="booking__form" id="bookingForm" novalidate>
+          <div class="field">
+            <label for="college">College</label>
+            <input id="college" name="college" type="text" placeholder="Your college name" required />
+          </div>
+          <div class="field">
+            <label for="city">City</label>
+            <input id="city" name="city" type="text" placeholder="Where you're moving" required />
+          </div>
+          <div class="field">
+            <label for="roomType">Room Type</label>
+            <select id="roomType" name="roomType">
+              <option value="any">Any</option>
+              <option value="ac">AC</option>
+              <option value="nonac">Non-AC</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="budget">Monthly Budget</label>
+            <select id="budget" name="budget">
+              <option value="any">Any</option>
+              <option value="lt5k">Under ₹5,000</option>
+              <option value="5-10k">₹5,000 – ₹10,000</option>
+              <option value="10-15k">₹10,000 – ₹15,000</option>
+              <option value="gt15k">Above ₹15,000</option>
+            </select>
+          </div>
+          <div class="field field--full">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="booking__actions">
+            <button class="btn btn--gold" type="submit">Find Hostels
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M8 7h9v9"/></svg>
+            </button>
+            <span class="booking__note">No spam — a human replies with matches near your campus.</span>
+          </div>
+          <p class="booking__done" id="bookingDone">Request received — we'll write to you with hostels near your campus.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="footer">
+    <div class="footer__grid">
+      <div>
+        <p class="footer__wordmark">Hostel<em>Mate</em></p>
+        <p class="footer__tag">The smart hostel finder near college — rooms, food, prices and owners, all in one place.</p>
+      </div>
+      <div class="footer__col">
+        <span class="footer__label">Explore</span>
+        <a href="#essentials">Essentials</a>
+        <a href="#discover">Discover</a>
+        <a href="#how">How It Works</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer__col">
+        <span class="footer__label">Contact</span>
+        <a href="mailto:hello@hostelmate.app">hello@hostelmate.app</a>
+        <a href="tel:+910000000000">+91 00000 00000</a>
+        <span class="footer__label" style="margin-top:16px;">Socials</span>
+        <a href="#">Instagram</a>
+        <a href="#">LinkedIn</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 HostelMate. All rights reserved.</span>
+      <span>New College. New City. No Worries.</span>
+    </div>
+  </footer>
+
+  <script>
+(function () {
+  'use strict';
+
+  /* ---------------- Scroll reveals ---------------- */
+  var revealObserver = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -5% 0px' });
+
+  document.querySelectorAll('[data-reveal]').forEach(function (el) {
+    revealObserver.observe(el);
+  });
+
+  /* ---------------- Booking form (demo) ---------------- */
+  var form = document.getElementById('bookingForm');
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var done = document.getElementById('bookingDone');
+      form.querySelectorAll('input, select, button, .booking__note').forEach(function (el) {
+        el.style.display = 'none';
+      });
+      done.style.display = 'block';
+    });
+  }
+})();
+  </script>
+</body>
+</html>
